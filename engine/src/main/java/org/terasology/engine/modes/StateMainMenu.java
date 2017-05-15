@@ -65,7 +65,6 @@ public class StateMainMenu implements GameState {
         messageOnLoad = showMessageOnLoad;
     }
 
-
     @Override
     public void init(GameEngine gameEngine) {
         context = gameEngine.createChildContext();
@@ -125,7 +124,7 @@ public class StateMainMenu implements GameState {
     }
 
     @Override
-    public void dispose() {
+    public void dispose(boolean shuttingDown) {
         eventSystem.process();
 
         componentSystemManager.shutdown();
@@ -136,7 +135,7 @@ public class StateMainMenu implements GameState {
     }
 
     private void playBackgroundMusic() {
-        context.get(AudioManager.class).playMusic(Assets.getMusic("engine:MenuTheme").get());
+        context.get(AudioManager.class).loopMusic(Assets.getMusic("engine:MenuTheme").get());
     }
 
     private void stopBackgroundMusic() {
@@ -163,6 +162,11 @@ public class StateMainMenu implements GameState {
     @Override
     public String getLoggingPhase() {
         return LoggingContext.MENU;
+    }
+
+    @Override
+    public Context getContext() {
+        return context;
     }
 
     @Override

@@ -42,6 +42,7 @@ import org.terasology.persistence.StorageManager;
 import org.terasology.physics.engine.PhysicsEngine;
 import org.terasology.rendering.nui.NUIManager;
 import org.terasology.rendering.nui.databinding.ReadOnlyBinding;
+import org.terasology.rendering.nui.layers.mainMenu.MessagePopup;
 import org.terasology.rendering.world.WorldRenderer;
 import org.terasology.rendering.world.WorldRenderer.RenderingStage;
 import org.terasology.world.chunks.ChunkProvider;
@@ -100,10 +101,16 @@ public class StateIngame implements GameState {
                 return !context.get(Config.class).getRendering().getDebug().isHudHidden();
             }
         });
+
+        if (networkSystem.getMode() == NetworkMode.CLIENT) {
+            String motd = networkSystem.getServer().getInfo().getMOTD();
+            if (motd != null && motd.length() != 0)
+                nuiManager.pushScreen(MessagePopup.ASSET_URI, MessagePopup.class).setMessage("Server MOTD", motd);
+        }
     }
 
     @Override
-    public void dispose() {
+    public void dispose(boolean shuttingDown) {
         ChunkProvider chunkProvider = context.get(ChunkProvider.class);
         chunkProvider.dispose();
 
@@ -136,7 +143,9 @@ public class StateIngame implements GameState {
 
         ModuleEnvironment oldEnvironment = context.get(ModuleManager.class).getEnvironment();
         context.get(ModuleManager.class).loadEnvironment(Collections.<Module>emptySet(), true);
-        context.get(EnvironmentSwitchHandler.class).handleSwitchToEmptyEnivronment(context);
+        if (!shuttingDown) {
+            context.get(EnvironmentSwitchHandler.class).handleSwitchToEmptyEnivronment(context);
+        }
         if (oldEnvironment != null) {
             oldEnvironment.close();
         }

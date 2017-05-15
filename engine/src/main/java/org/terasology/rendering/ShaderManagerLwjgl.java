@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 MovingBlocks
+ * Copyright 2017 MovingBlocks
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,8 +23,6 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.rendering.shader.ShaderParametersPrePostComposite;
-import org.terasology.utilities.Assets;
 import org.terasology.assets.ResourceUrn;
 import org.terasology.assets.management.AssetManager;
 import org.terasology.registry.CoreRegistry;
@@ -38,18 +36,20 @@ import org.terasology.rendering.shader.ShaderParametersBlock;
 import org.terasology.rendering.shader.ShaderParametersChunk;
 import org.terasology.rendering.shader.ShaderParametersDebug;
 import org.terasology.rendering.shader.ShaderParametersDefault;
-import org.terasology.rendering.shader.ShaderParametersToneMapping;
+import org.terasology.rendering.shader.ShaderParametersInitialPost;
 import org.terasology.rendering.shader.ShaderParametersLightBufferPass;
 import org.terasology.rendering.shader.ShaderParametersLightGeometryPass;
 import org.terasology.rendering.shader.ShaderParametersLightShafts;
 import org.terasology.rendering.shader.ShaderParametersOcDistortion;
 import org.terasology.rendering.shader.ShaderParametersParticle;
 import org.terasology.rendering.shader.ShaderParametersPost;
-import org.terasology.rendering.shader.ShaderParametersInitialPost;
+import org.terasology.rendering.shader.ShaderParametersPrePostComposite;
 import org.terasology.rendering.shader.ShaderParametersSSAO;
 import org.terasology.rendering.shader.ShaderParametersShadowMap;
 import org.terasology.rendering.shader.ShaderParametersSky;
 import org.terasology.rendering.shader.ShaderParametersSobel;
+import org.terasology.rendering.shader.ShaderParametersToneMapping;
+import org.terasology.utilities.Assets;
 
 import java.util.Optional;
 import java.util.Set;
@@ -115,9 +115,9 @@ public class ShaderManagerLwjgl implements ShaderManager {
         prepareAndStoreShaderProgramInstance("sobel", new ShaderParametersSobel());
         prepareAndStoreShaderProgramInstance("initialPost", new ShaderParametersInitialPost());
         prepareAndStoreShaderProgramInstance("prePostComposite", new ShaderParametersPrePostComposite());
-        prepareAndStoreShaderProgramInstance("highp", new ShaderParametersDefault());
+        prepareAndStoreShaderProgramInstance("highPass", new ShaderParametersDefault());
         prepareAndStoreShaderProgramInstance("blur", new ShaderParametersDefault());
-        prepareAndStoreShaderProgramInstance("down", new ShaderParametersDefault());
+        prepareAndStoreShaderProgramInstance("downSampler", new ShaderParametersDefault());
         prepareAndStoreShaderProgramInstance("toneMapping", new ShaderParametersToneMapping());
         prepareAndStoreShaderProgramInstance("sky", new ShaderParametersSky());
         prepareAndStoreShaderProgramInstance("chunk", new ShaderParametersChunk());
